@@ -1,0 +1,27 @@
+<h1>{{user.name}}'s videos</h1>
+
+{{#if message}}
+<div class="alert alert-success">{{message}}</div>
+{{/if}}
+
+
+<ul class="media-list">
+	{{#each videos}}
+	<li class="media">
+		<a class="pull-left" href="/video/{{id}}">
+			<img class="media-object" src="{{thumb}}" style="width: 64px; height: 64px;">
+		</a>
+		<div class="media-body">
+			<h4>{{name}}</h4>
+			<p>
+				<form method="POST" action="/video/{{id}}">
+				    <input type="hidden" name="_method" value="DELETE"/>
+				    <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+				</form>
+			</p>
+		</div>
+	</li>
+	{{/each}}
+</ul>
+
+<a href="/upload" class="btn btn-default btn-warning pull-right">Upload</a>

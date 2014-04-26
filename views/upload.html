@@ -1,0 +1,49 @@
+<h1>Upload</h1>
+
+{{#if message}}
+<div class="alert alert-danger">{{message}}</div>
+{{/if}}
+
+<form method="post" enctype="multipart/form-data" action="/upload" id="uploadForm">
+	<input id="socketId" type="hidden" name="socketId">
+
+	<div class="form-group">
+		<input type="file" name="video"/>
+	</div>
+
+	<button type="submit" class="btn btn-warning pull-right" id="submitButton">Submit</button>
+</form>
+
+
+
+		
+
+
+<div class="progress progress-striped" id="progressBar" style="display: none">
+  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+    0%
+  </div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+	 $(document).ready(function() {
+
+	 	$('#uploadForm').submit(function() {
+		 	$("#progressBar").show();
+		 	$("#uploadForm").css("display","none");
+		 });
+
+	 	var socket = io.connect('http://localhost:3000');
+	 	
+	 	socket.on('socketId', function(data) {
+	 		return $('#socketId').val(data);
+	 	});
+
+	 	socket.on('upload-progress', function(data) {
+ 			$('.progress-bar').css('width', data.value+'%').attr('aria-valuenow', data.value).text(data.value+'%');
+	 	});
+	 });
+</script>
